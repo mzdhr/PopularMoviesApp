@@ -32,6 +32,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
             Log.d(TAG, "onCreate: exception" + e.toString());
         }
 
+        // Demo Data
+        for (int i = 0; i < 20; i++) {
+            Movie movie = new Movie("Title", "url", "33-33-2018", "8", "this is jsut a plot test for this movie");
+            mMovies.add(movie);
+        }
+
         // Setting RecyclerView
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.mainRecyclerView);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
@@ -40,11 +46,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         MovieAdapter adapter = new MovieAdapter(mMovies, this);
         mRecyclerView.setAdapter(adapter);
 
-        // Demo Data
-        for (int i = 0; i < 20; i++) {
-            Movie movie = new Movie("Title", "url", "33-33-2018", "8", "this is jsut a plot test for this movie");
-            mMovies.add(movie);
-        }
+
 
     }
 

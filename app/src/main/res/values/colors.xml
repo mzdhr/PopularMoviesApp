@@ -5,4 +5,6 @@
     <color name="colorAccent">#FFF000</color>
 
     <color name="colorActivityBackground">#000000</color>
+    <color name="colorText">#FFF000</color>
+    <color name="colorHeaderText">#FFF000</color>
 </resources>

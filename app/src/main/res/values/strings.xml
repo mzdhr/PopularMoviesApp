@@ -2,4 +2,11 @@
     <string name="app_name">Popular Movies</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_details">DetailsActivity</string>
+    <string name="demo_plot">Movie details layout contains title, release date, movie poster, vote average, and plot synopsis. Movie details layout contains title, release date, movie poster, vote average, and plot synopsis. Movie details layout contains title, release date, movie poster, vote average, and plot synopsis. Movie details layout contains title, release date, movie poster, vote average, and plot synopsis. Movie details layout contains title, release date, movie poster, vote average, and plot synopsis.</string>
+    <string name="plot">Plot</string>
+    <string name="demo_votes">9.5/10</string>
+    <string name="votes">Votes</string>
+    <string name="demo_release_date">2252528/356456</string>
+    <string name="release_date">Release Date</string>
+    <string name="movie_title_demo">Johnny Mnemonic</string>
 </resources>
