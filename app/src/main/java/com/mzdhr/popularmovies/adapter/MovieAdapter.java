@@ -1,5 +1,6 @@
 package com.mzdhr.popularmovies.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 
 import com.mzdhr.popularmovies.R;
 import com.mzdhr.popularmovies.model.Movie;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -21,13 +23,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     //private static int viewHolderCount;
     final private ListItemClickListener mOnClickListener;
     private ArrayList<Movie> mMovies;
+    private Context mContext;
 
     public interface ListItemClickListener{
         void onListItemClick(int clickedItemIndex);
     }
 
-    public MovieAdapter(ArrayList<Movie> movies, ListItemClickListener listener){
+    public MovieAdapter(ArrayList<Movie> movies, Context context, ListItemClickListener listener){
         mMovies = movies;
+        mContext = context;
         mOnClickListener = listener;
     }
 
@@ -61,7 +65,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         }
 
         void bind(int position) {
-            posterImageView.setImageResource(R.drawable.demo_poster);
+            Picasso.with(mContext)
+                    .load(mMovies.get(position).getPosterUrl())
+                    .placeholder(R.drawable.demo_poster) // TODO: 27/02/2018 need to find "fetching poster" image
+                    .error(R.drawable.demo_poster)  // TODO: 27/02/2018 need to find "no poster available "image
+                    .into(posterImageView);
+            //posterImageView.setImageResource(R.drawable.demo_poster);
         }
 
         @Override

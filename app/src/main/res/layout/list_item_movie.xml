@@ -8,9 +8,9 @@
     <ImageView
         android:id="@+id/poster_imageView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
         android:src="@drawable/demo_poster"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         android:layout_margin="2dp"
         />
 
