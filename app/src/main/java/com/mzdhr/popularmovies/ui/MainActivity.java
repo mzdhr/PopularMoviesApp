@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -28,7 +29,6 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickListener {
-
     private static final String TAG = MainActivity.class.getSimpleName();
     private ArrayList<Movie> mMovies = new ArrayList<>();
     private ProgressBar mProgressBar;
@@ -40,48 +40,37 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        try {
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//            setSupportActionBar(toolbar);
-        } catch (Exception e) {
-            Log.d(TAG, "onCreate: exception" + e.toString());
-        }
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         findViews();
-
-
-        // Demo Data
-//        for (int i = 0; i < 20; i++) {
-//            Movie movie = new Movie("Title", "url", "33-33-2018", "8", "this is jsut a plot test for this movie");
-//            mMovies.add(movie);
-//        }
 
         // Setting RecyclerView
         mRecyclerView = (RecyclerView) findViewById(R.id.mainRecyclerView);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new MovieAdapter(mMovies, this,this);
-        mRecyclerView.setAdapter(mAdapter);
-
-
-
-        // build the url
-        URL url = NetworkUtils.buildURl("vote_average.desc");
-        Log.d(TAG, "onCreate: url: " + url.toString());
-
-        // query the url
-        new MovieQueryTask().execute(url);
-
-    }
-
-    public void updateData(){
-        mAdapter = new MovieAdapter(mMovies, this,this);
-        mRecyclerView.setAdapter(mAdapter);
+        getData(Constant.SORT_BY_PLAYING_RIGHT_NOW);
+        setAdapter();
     }
 
     private void findViews() {
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+    }
+
+    private void setAdapter(){
+        mAdapter = new MovieAdapter(mMovies, this, this);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    public void getData(String sortType) {
+        URL url;
+        if (sortType.equals(Constant.SORT_BY_PLAYING_RIGHT_NOW)){
+            url = NetworkUtils.buildURl(sortType);
+        } else {
+            url = NetworkUtils.buildDiscoverURl(sortType);
+        }
+        Log.d(TAG, "getData: URL: " + url.toString());
+        new MovieQueryTask().execute(url);
     }
 
     @Override
@@ -93,13 +82,18 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if (id == R.id.action_sort_by_popular) {
+            getData(Constant.SORT_BY_POPULAR);
+            return true;
+        }
+
+        if (id == R.id.action_sort_by_highest_rated) {
+            getData(Constant.SORT_BY_HIGHEST_RATED);
             return true;
         }
 
@@ -117,17 +111,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         startActivity(intent);
     }
 
-    private void showJsonDataView() {
-        // First, make sure the error is invisible
-       // mErrorMessageDisplay.setVisibility(View.INVISIBLE);
-        // Then, make sure the JSON data is visible
-        //mSearchResultsTextView.setVisibility(View.VISIBLE);
-    }
 
     public class MovieQueryTask extends AsyncTask<URL, Void, String> {
-
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             super.onPreExecute();
             mProgressBar.setVisibility(View.VISIBLE);
         }
@@ -145,37 +132,22 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         }
 
         @Override
-        protected void onPostExecute(String result){
+        protected void onPostExecute(String result) {
             mProgressBar.setVisibility(View.INVISIBLE);
-            if (result != null && !TextUtils.isEmpty(result)){
-                showJsonDataView();
-
+            if (result != null && !TextUtils.isEmpty(result)) {
+                //showJsonDataView();
                 try {
                     mMovies.clear();
                     mMovies = JsonUtils.parseMovieJSON(result);
-                    Log.d(TAG, "onPostExecute: " + mMovies.get(1).getPosterUrl());
-                    updateData();
+                    setAdapter();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
             } else {
-                //showErrorMessage();
+
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 

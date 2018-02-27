@@ -10,4 +10,7 @@ public class Constant {
     public static final String MOVIE_RATING = "movie_rating";
     public static final String MOVIE_RELEASE_DATE = "movie_release_date";
     public static final String MOVIE_PLOT = "movie_plot";
+    public static final String SORT_BY_PLAYING_RIGHT_NOW = "playing_right_now_just_a_dummy_text";
+    public static final String SORT_BY_POPULAR = "popularity.desc";
+    public static final String SORT_BY_HIGHEST_RATED = "vote_average.desc";
 }
