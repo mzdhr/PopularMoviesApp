@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorPrimary">#000000</color>
-    <color name="colorAccent">#FFF000</color>
+    <color name="colorPrimary">#212121</color>
+    <color name="colorAccent">#FF6601</color>
 
-    <color name="colorActivityBackground">#000000</color>
-    <color name="colorText">#FFF000</color>
-    <color name="colorHeaderText">#FFF000</color>
+    <color name="colorActivityBackground">#303030</color>
+    <color name="colorLayoutBackground">#424242</color>
+    <color name="colorHeaderText">#E2E3E4</color>
+    <color name="colorText">#98999A</color>
 </resources>

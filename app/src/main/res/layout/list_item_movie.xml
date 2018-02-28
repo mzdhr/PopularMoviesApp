@@ -2,7 +2,12 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:padding="4dp"
+    android:elevation="4dp"
+    android:background="@color/colorLayoutBackground"
+    >
 
 
     <ImageView
@@ -11,7 +16,6 @@
         android:layout_height="278dp"
         android:src="@drawable/demo_poster"
         android:scaleType="fitXY"
-        android:layout_margin="2dp"
         />
 
 </RelativeLayout>
