@@ -9,4 +9,5 @@
     <string name="demo_release_date">2252528/356456</string>
     <string name="release_date">Release Date</string>
     <string name="movie_title_demo">Johnny Mnemonic</string>
+    <string name="error_message">Failed to get results. Please try again.</string>
 </resources>

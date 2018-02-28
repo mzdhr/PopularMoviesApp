@@ -67,8 +67,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         void bind(int position) {
             Picasso.with(mContext)
                     .load(mMovies.get(position).getPosterUrl())
-                    .placeholder(R.drawable.demo_poster) // TODO: 27/02/2018 need to find "fetching poster" image
-                    .error(R.drawable.demo_poster)  // TODO: 27/02/2018 need to find "no poster available "image
+                    .placeholder(R.drawable.loadingposter)
+                    .error(R.drawable.noposteravailable)
                     .into(posterImageView);
             //posterImageView.setImageResource(R.drawable.demo_poster);
         }

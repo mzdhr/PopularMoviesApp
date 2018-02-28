@@ -57,8 +57,8 @@ public class DetailsActivity extends AppCompatActivity {
     private void bindData() {
         Picasso.with(this)
                 .load(mPosterLink)
-                .placeholder(R.drawable.demo_poster) // TODO: 27/02/2018 need to find "fetching poster" image
-                .error(R.drawable.demo_poster)  // TODO: 27/02/2018 need to find "no poster available "image
+                .placeholder(R.drawable.loadingposter)
+                .error(R.drawable.noposteravailable)
                 .into(mPosterImageView);
 
         mTitleTextView.setText(mTitle);
