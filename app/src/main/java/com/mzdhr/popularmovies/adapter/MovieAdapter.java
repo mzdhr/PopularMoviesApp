@@ -70,7 +70,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                     .placeholder(R.drawable.loadingposter)
                     .error(R.drawable.noposteravailable)
                     .into(posterImageView);
-            //posterImageView.setImageResource(R.drawable.demo_poster);
         }
 
         @Override

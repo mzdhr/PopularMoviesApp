@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.mzdhr.popularmovies.R;
 import com.mzdhr.popularmovies.adapter.MovieAdapter;
@@ -29,11 +30,14 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickListener {
+    // Objects
     private static final String TAG = MainActivity.class.getSimpleName();
     private ArrayList<Movie> mMovies = new ArrayList<>();
-    private ProgressBar mProgressBar;
-    private RecyclerView mRecyclerView;
     private MovieAdapter mAdapter;
+    // Views
+    private RecyclerView mRecyclerView;
+    private ProgressBar mProgressBar;
+    private TextView mErrorMessageTextView;
 
 
     @Override
@@ -45,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         findViews();
 
         // Setting RecyclerView
-        mRecyclerView = (RecyclerView) findViewById(R.id.mainRecyclerView);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
@@ -54,7 +57,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     }
 
     private void findViews() {
+        mRecyclerView = (RecyclerView) findViewById(R.id.mainRecyclerView);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mErrorMessageTextView = (TextView) findViewById(R.id.error_message);
     }
 
     private void setAdapter(){
@@ -62,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    public void getData(String sortType) {
+    private void getData(String sortType) {
         URL url;
         if (sortType.equals(Constant.SORT_BY_PLAYING_RIGHT_NOW)){
             url = NetworkUtils.buildURl(sortType);
@@ -72,6 +77,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         Log.d(TAG, "getData: URL: " + url.toString());
         new MovieQueryTask().execute(url);
     }
+
+    private void showErrorMessage(){
+        mErrorMessageTextView.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        mProgressBar.setVisibility(View.INVISIBLE);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -84,6 +96,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if (id == R.id.action_playing_right_now){
+            getData(Constant.SORT_BY_PLAYING_RIGHT_NOW);
             return true;
         }
 
@@ -112,6 +129,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     }
 
 
+    /**
+     * Async Task Class to grab data from the internet
+     */
     public class MovieQueryTask extends AsyncTask<URL, Void, String> {
         @Override
         protected void onPreExecute() {
@@ -134,8 +154,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         @Override
         protected void onPostExecute(String result) {
             mProgressBar.setVisibility(View.INVISIBLE);
+            mErrorMessageTextView.setVisibility(View.INVISIBLE);
+            mRecyclerView.setVisibility(View.VISIBLE);
             if (result != null && !TextUtils.isEmpty(result)) {
-                //showJsonDataView();
                 try {
                     mMovies.clear();
                     mMovies = JsonUtils.parseMovieJSON(result);
@@ -145,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                 }
 
             } else {
-
+                showErrorMessage();
             }
         }
 

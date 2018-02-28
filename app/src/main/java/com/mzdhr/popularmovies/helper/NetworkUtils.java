@@ -32,7 +32,7 @@ public class NetworkUtils {
      */
     public static URL buildURl(String sortBy) {
         Uri builtUri = Uri.parse(THEMOVIEDB_API_BASE_URL_FOR_PLAYING_RIGHT_NOW).buildUpon()
-                .appendQueryParameter(PARAM_API_KEY, "e800e6bcbdfb1860ba3708d7a77d0844")  // TODO: 27/02/2018 REMOVE IT, BEFORE GIT PUSH // Hi developer replace it with your key
+                .appendQueryParameter(PARAM_API_KEY, "")  // TODO: Enter api key here.
                 .appendQueryParameter(PARAM_SORT, sortBy)
                 .appendQueryParameter(PARAM_MAX_PAGE, "1")
                 .appendQueryParameter(PARAM_LANG, "en-US")
@@ -48,7 +48,6 @@ public class NetworkUtils {
         return url;
     }
 
-    // https://api.themoviedb.org/3/discover/movie?api_key=e800e6bcbdfb1860ba3708d7a77d0844&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1
     /**
      * This method to build "discover" URL to query themoviedb.com api.
      * @param sortBy
@@ -56,7 +55,7 @@ public class NetworkUtils {
      */
     public static URL buildDiscoverURl(String sortBy) {
         Uri builtUri = Uri.parse(THEMOVIEDB_API_BASE_URL_FOR_DISCOVER).buildUpon()
-                .appendQueryParameter(PARAM_API_KEY, "e800e6bcbdfb1860ba3708d7a77d0844")  // TODO: 27/02/2018 REMOVE IT, BEFORE GIT PUSH // Hi developer replace it with your key
+                .appendQueryParameter(PARAM_API_KEY, "")  // TODO: Enter api key here.
                 .appendQueryParameter(PARAM_SORT, sortBy)
                 .appendQueryParameter(PARAM_MAX_PAGE, "1")
                 .appendQueryParameter(PARAM_LANG, "en-US")
