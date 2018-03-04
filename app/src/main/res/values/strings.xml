@@ -10,4 +10,8 @@
     <string name="release_date">Release Date</string>
     <string name="movie_title_demo">Johnny Mnemonic</string>
     <string name="error_message">Failed to get results. Please try again.</string>
+    <string name="title">Title</string>
+    <string name="popular_movies">Popular Movies</string>
+    <string name="highest_rated">Highest Rated</string>
+    <string name="playing_now">Playing Now</string>
 </resources>

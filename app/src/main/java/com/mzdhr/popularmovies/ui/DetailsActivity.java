@@ -39,9 +39,8 @@ public class DetailsActivity extends AppCompatActivity {
             mReleaseDate = intent.getStringExtra(Constant.MOVIE_RELEASE_DATE);
             mRating = intent.getStringExtra(Constant.MOVIE_RATING);
             mPlot = intent.getStringExtra(Constant.MOVIE_PLOT);
+            getSupportActionBar().setTitle(mTitle);
             bindData();
-        } else {
-            // show error message
         }
 
     }

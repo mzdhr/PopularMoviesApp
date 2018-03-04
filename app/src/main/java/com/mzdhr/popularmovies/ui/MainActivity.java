@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        getData(Constant.SORT_BY_PLAYING_RIGHT_NOW);
+        getData(Constant.SORT_BY_POPULAR);
         setAdapter();
     }
 
@@ -62,23 +62,31 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         mErrorMessageTextView = (TextView) findViewById(R.id.error_message);
     }
 
-    private void setAdapter(){
+    private void setAdapter() {
         mAdapter = new MovieAdapter(mMovies, this, this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
     private void getData(String sortType) {
-        URL url;
-        if (sortType.equals(Constant.SORT_BY_PLAYING_RIGHT_NOW)){
-            url = NetworkUtils.buildURl(sortType);
-        } else {
+        URL url = null;
+
+        if (sortType.equals(Constant.SORT_BY_POPULAR)) {
             url = NetworkUtils.buildDiscoverURl(sortType);
+            getSupportActionBar().setTitle(R.string.popular_movies);
+        }
+        if (sortType.equals(Constant.SORT_BY_HIGHEST_RATED)) {
+            url = NetworkUtils.buildDiscoverURl(sortType);
+            getSupportActionBar().setTitle(R.string.highest_rated);
+        }
+        if (sortType.equals(Constant.SORT_BY_PLAYING_RIGHT_NOW)) {
+            url = NetworkUtils.buildURl(sortType);
+            getSupportActionBar().setTitle(R.string.playing_now);
         }
         Log.d(TAG, "getData: URL: " + url.toString());
         new MovieQueryTask().execute(url);
     }
 
-    private void showErrorMessage(){
+    private void showErrorMessage() {
         mErrorMessageTextView.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.INVISIBLE);
@@ -99,18 +107,24 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
             return true;
         }
 
-        if (id == R.id.action_playing_right_now){
-            getData(Constant.SORT_BY_PLAYING_RIGHT_NOW);
-            return true;
-        }
-
         if (id == R.id.action_sort_by_popular) {
             getData(Constant.SORT_BY_POPULAR);
+            mProgressBar.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.INVISIBLE);
             return true;
         }
 
         if (id == R.id.action_sort_by_highest_rated) {
             getData(Constant.SORT_BY_HIGHEST_RATED);
+            mProgressBar.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.INVISIBLE);
+            return true;
+        }
+
+        if (id == R.id.action_playing_right_now) {
+            getData(Constant.SORT_BY_PLAYING_RIGHT_NOW);
+            mProgressBar.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.INVISIBLE);
             return true;
         }
 

@@ -11,12 +11,6 @@
         />
 
     <item
-        android:id="@+id/action_playing_right_now"
-        android:orderInCategory="100"
-        android:title="Playing Now Movies"
-        app:showAsAction="never"/>
-
-    <item
         android:id="@+id/action_sort_by_popular"
         android:orderInCategory="100"
         android:title="Popular Movies"
@@ -26,5 +20,11 @@
         android:id="@+id/action_sort_by_highest_rated"
         android:orderInCategory="100"
         android:title="Highest Rated Movies"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_playing_right_now"
+        android:orderInCategory="100"
+        android:title="Playing Now Movies"
         app:showAsAction="never"/>
 </menu>

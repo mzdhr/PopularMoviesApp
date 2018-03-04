@@ -23,6 +23,7 @@ public class NetworkUtils {
     final static String PARAM_SORT = "sort_by";     // values: default: popularity.desc |||| popularity.asc, popularity.desc, vote_average.asc, vote_average.desc
     final static String PARAM_MAX_PAGE = "page";
     final static String PARAM_LANG = "language";
+    final static String APK = "e800e6bcbdfb1860ba3708d7a77d0844"; // TODO: Enter api key here.
 
 
     /**
@@ -32,7 +33,7 @@ public class NetworkUtils {
      */
     public static URL buildURl(String sortBy) {
         Uri builtUri = Uri.parse(THEMOVIEDB_API_BASE_URL_FOR_PLAYING_RIGHT_NOW).buildUpon()
-                .appendQueryParameter(PARAM_API_KEY, "")  // TODO: Enter api key here.
+                .appendQueryParameter(PARAM_API_KEY, APK)
                 .appendQueryParameter(PARAM_SORT, sortBy)
                 .appendQueryParameter(PARAM_MAX_PAGE, "1")
                 .appendQueryParameter(PARAM_LANG, "en-US")
@@ -55,7 +56,7 @@ public class NetworkUtils {
      */
     public static URL buildDiscoverURl(String sortBy) {
         Uri builtUri = Uri.parse(THEMOVIEDB_API_BASE_URL_FOR_DISCOVER).buildUpon()
-                .appendQueryParameter(PARAM_API_KEY, "")  // TODO: Enter api key here.
+                .appendQueryParameter(PARAM_API_KEY, APK)
                 .appendQueryParameter(PARAM_SORT, sortBy)
                 .appendQueryParameter(PARAM_MAX_PAGE, "1")
                 .appendQueryParameter(PARAM_LANG, "en-US")
