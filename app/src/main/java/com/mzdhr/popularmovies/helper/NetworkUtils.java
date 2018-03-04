@@ -23,7 +23,7 @@ public class NetworkUtils {
     final static String PARAM_SORT = "sort_by";     // values: default: popularity.desc |||| popularity.asc, popularity.desc, vote_average.asc, vote_average.desc
     final static String PARAM_MAX_PAGE = "page";
     final static String PARAM_LANG = "language";
-    final static String APK = "e800e6bcbdfb1860ba3708d7a77d0844"; // TODO: Enter api key here.
+    final static String APK = ""; // TODO: Enter api key here.
 
 
     /**
