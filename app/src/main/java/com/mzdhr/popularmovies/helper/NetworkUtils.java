@@ -13,7 +13,7 @@ import java.util.Scanner;
  * Created by mohammad on 27/02/2018.
  * This class contains methods to help with request information from the api themoviedb.com
  * <p>
- * More params and options for the API values at: https://themoviedb.api-docs.io/3/discover
+ * More params and options for the API values at: https://themoviedb.api-docs.io/3/movie/
  */
 
 public class NetworkUtils {
