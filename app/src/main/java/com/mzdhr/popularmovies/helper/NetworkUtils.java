@@ -17,47 +17,22 @@ import java.util.Scanner;
  */
 
 public class NetworkUtils {
-    final static String THEMOVIEDB_API_BASE_URL_FOR_PLAYING_RIGHT_NOW = "https://api.themoviedb.org/3/movie/now_playing?";
-    final static String THEMOVIEDB_API_BASE_URL_FOR_DISCOVER = "https://api.themoviedb.org/3/discover/movie?";
+    final static String THEMOVIEDB_API_BASE_URL = "https://api.themoviedb.org/3/movie?";
     final static String PARAM_API_KEY = "api_key";
-    final static String PARAM_SORT = "sort_by";     // values: default: popularity.desc |||| popularity.asc, popularity.desc, vote_average.asc, vote_average.desc
     final static String PARAM_MAX_PAGE = "page";
     final static String PARAM_LANG = "language";
-    final static String APK = ""; // TODO: Enter api key here.
+    final static String API = "e800e6bcbdfb1860ba3708d7a77d0844"; // TODO: Enter api key here.
 
 
     /**
-     * This method to build "now playing" URL to query themoviedb.com api.
-     * @param sortBy User chooses this value.
+     * This method to build URL to query themoviedb.com api.
+     * @param sortBy this is the path value, which user chooses. /movie/popular, /movie/top_rated, /movie/playing_now
      * @return the full URL for API.
      */
     public static URL buildURl(String sortBy) {
-        Uri builtUri = Uri.parse(THEMOVIEDB_API_BASE_URL_FOR_PLAYING_RIGHT_NOW).buildUpon()
-                .appendQueryParameter(PARAM_API_KEY, APK)
-                .appendQueryParameter(PARAM_SORT, sortBy)
-                .appendQueryParameter(PARAM_MAX_PAGE, "1")
-                .appendQueryParameter(PARAM_LANG, "en-US")
-                .build();
-
-        URL url = null;
-        try {
-            url = new URL(builtUri.toString());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        return url;
-    }
-
-    /**
-     * This method to build "discover" URL to query themoviedb.com api.
-     * @param sortBy
-     * @return
-     */
-    public static URL buildDiscoverURl(String sortBy) {
-        Uri builtUri = Uri.parse(THEMOVIEDB_API_BASE_URL_FOR_DISCOVER).buildUpon()
-                .appendQueryParameter(PARAM_API_KEY, APK)
-                .appendQueryParameter(PARAM_SORT, sortBy)
+        Uri builtUri = Uri.parse(THEMOVIEDB_API_BASE_URL).buildUpon()
+                .appendPath(sortBy)
+                .appendQueryParameter(PARAM_API_KEY, API)
                 .appendQueryParameter(PARAM_MAX_PAGE, "1")
                 .appendQueryParameter(PARAM_LANG, "en-US")
                 .build();

@@ -71,11 +71,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         URL url = null;
 
         if (sortType.equals(Constant.SORT_BY_POPULAR)) {
-            url = NetworkUtils.buildDiscoverURl(sortType);
+            url = NetworkUtils.buildURl(sortType);
             getSupportActionBar().setTitle(R.string.popular_movies);
         }
         if (sortType.equals(Constant.SORT_BY_HIGHEST_RATED)) {
-            url = NetworkUtils.buildDiscoverURl(sortType);
+            url = NetworkUtils.buildURl(sortType);
             getSupportActionBar().setTitle(R.string.highest_rated);
         }
         if (sortType.equals(Constant.SORT_BY_PLAYING_RIGHT_NOW)) {
