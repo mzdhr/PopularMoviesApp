@@ -29,4 +29,12 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="overLayoutStyle">
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:background">@color/colorLayoutBackground</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+
 </resources>
