@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         intent.putExtra(Constant.MOVIE_RATING, mMovies.get(clickedItemIndex).getRating());
         intent.putExtra(Constant.MOVIE_RELEASE_DATE, mMovies.get(clickedItemIndex).getReleaseDate());
         intent.putExtra(Constant.MOVIE_PLOT, mMovies.get(clickedItemIndex).getPlot());
+        intent.putExtra(Constant.MOVIE_ID, mMovies.get(clickedItemIndex).getMovieID());
         startActivity(intent);
     }
 

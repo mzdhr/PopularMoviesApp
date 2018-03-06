@@ -25,13 +25,13 @@ public class NetworkUtils {
 
 
     /**
-     * This method to build URL to query themoviedb.com api.
-     * @param sortBy this is the path value, which user chooses. /movie/popular, /movie/top_rated, /movie/playing_now
+     * This method to build URL to query themoviedb.com api. to retrieve movie list.
+     * @param sortType this is the path value, which user chooses. /movie/popular, /movie/top_rated, /movie/playing_now
      * @return the full URL for API.
      */
-    public static URL buildURl(String sortBy) {
+    public static URL buildURl(String sortType) {
         Uri builtUri = Uri.parse(THEMOVIEDB_API_BASE_URL).buildUpon()
-                .appendPath(sortBy)
+                .appendPath(sortType)
                 .appendQueryParameter(PARAM_API_KEY, API)
                 .appendQueryParameter(PARAM_MAX_PAGE, "1")
                 .appendQueryParameter(PARAM_LANG, "en-US")
@@ -46,6 +46,33 @@ public class NetworkUtils {
 
         return url;
     }
+
+    /**
+     * This method to build URL to query themoviedb.com api, to retrieve single Movie Trailers and User Reviews.
+     *
+     * @param sortType this is the path value, which user chooses. /movie/{id}/videos, /movie/{id}/reviews
+     * @param movieID
+     * @return
+     */
+    public static URL buildURL(String sortType, String movieID){
+        Uri buildTri = Uri.parse(THEMOVIEDB_API_BASE_URL).buildUpon()
+                .appendPath(movieID)
+                .appendPath(sortType)
+                .appendQueryParameter(PARAM_API_KEY, API)
+                .appendQueryParameter(PARAM_MAX_PAGE, "1")
+                .appendQueryParameter(PARAM_LANG, "en-US")
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(buildTri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
 
     /**
      *  This method to get the result from HTTP response, by a full build url.

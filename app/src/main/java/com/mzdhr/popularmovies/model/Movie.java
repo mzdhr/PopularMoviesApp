@@ -10,13 +10,15 @@ public class Movie {
     String mReleaseDate;
     String mRating;
     String mPlot;
+    String mMovieID;
 
-    public Movie(String title, String posterUrl, String releaseDate, String rating, String plot) {
+    public Movie(String title, String posterUrl, String releaseDate, String rating, String plot, String movieID) {
         mTitle = title;
         mPosterUrl = posterUrl;
         mReleaseDate = releaseDate;
         mRating = rating;
         mPlot = plot;
+        mMovieID = movieID;
     }
 
     public String getTitle() {
@@ -57,5 +59,13 @@ public class Movie {
 
     public void setPlot(String plot) {
         mPlot = plot;
+    }
+
+    public String getMovieID() {
+        return mMovieID;
+    }
+
+    public void setMovieID(String movieID) {
+        mMovieID = movieID;
     }
 }

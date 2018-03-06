@@ -8,7 +8,7 @@
     android:background="@color/colorActivityBackground"
     android:clipToPadding="false"
     android:padding="8dp"
-    android:scrollbarStyle="outsideInset"
+    android:scrollbarStyle="outsideOverlay"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.mzdhr.popularmovies.ui.DetailsActivity"
     tools:showIn="@layout/activity_details"
@@ -16,16 +16,17 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/poster_layout"
-            android:layout_width="wrap_content"
+            style="@style/overLayoutStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@color/colorLayoutBackground"
-            android:elevation="4dp"
-            android:padding="4dp"
+            android:orientation="horizontal"
+            android:padding="8dp"
+
             >
 
             <ImageView
@@ -34,65 +35,66 @@
                 android:layout_height="278dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/demo_poster"
+                android:background="@drawable/boarder_background"
                 />
 
-        </RelativeLayout>
-        `
-
-        <LinearLayout
-            android:id="@+id/name_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="278dp"
-            android:layout_toEndOf="@id/poster_layout"
-            android:orientation="vertical"
-            android:padding="8dp"
-            >
-
-            <TextView
-                style="@style/headerTextStyle"
+            <LinearLayout
+                android:id="@+id/name_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/title"
-                />
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:layout_toEndOf="@id/poster_layout"
+                android:orientation="vertical"
+                android:padding="4dp"
+                >
 
-            <TextView
-                android:id="@+id/movie_title_textView"
-                style="@style/subHeaderTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/movie_title_demo"
-                />
+                <TextView
+                    style="@style/headerTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title"
+                    />
 
-            <TextView
-                style="@style/headerTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/release_date"
-                />
+                <TextView
+                    android:id="@+id/movie_title_textView"
+                    style="@style/subHeaderTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/movie_title_demo"
+                    />
 
-            <TextView
-                android:id="@+id/movie_release_date_textView"
-                style="@style/subHeaderTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/demo_release_date"
-                />
+                <TextView
+                    style="@style/headerTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/release_date"
+                    />
 
-            <TextView
-                style="@style/headerTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/votes"
-                />
+                <TextView
+                    android:id="@+id/movie_release_date_textView"
+                    style="@style/subHeaderTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/demo_release_date"
+                    />
 
-            <TextView
-                android:id="@+id/movie_vote_textView"
-                style="@style/subHeaderTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/demo_votes"
-                />
+                <TextView
+                    style="@style/headerTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/votes"
+                    />
+
+                <TextView
+                    android:id="@+id/movie_vote_textView"
+                    style="@style/subHeaderTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/demo_votes"
+                    />
+            </LinearLayout>
         </LinearLayout>
+
 
         <RelativeLayout
             android:id="@+id/plot_layout"
@@ -100,7 +102,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/poster_layout"
-
             >
 
             <TextView
@@ -118,6 +119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/plot_header_textView"
                 android:text="@string/demo_plot"
+                android:padding="8dp"
                 />
 
         </RelativeLayout>
@@ -126,16 +128,28 @@
             android:id="@+id/trailer_layout"
             style="@style/overLayoutStyle"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/plot_layout"
             >
+
+            <TextView
+                android:id="@+id/trailer_header_textView"
+                style="@style/headerTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/trailers"
+                />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/trailerRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/trailer_header_textView"
                 android:clipToPadding="false"
-                android:padding="4dp">
+                android:padding="4dp"
+                tools:listitem="@layout/list_item_movie_trailer"
+
+                >
 
             </android.support.v7.widget.RecyclerView>
         </RelativeLayout>
@@ -148,12 +162,24 @@
             android:layout_below="@id/trailer_layout"
             >
 
+            <TextView
+                android:id="@+id/reviews_header_textView"
+                style="@style/headerTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/reviews"
+                />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/reviewRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/reviews_header_textView"
                 android:clipToPadding="false"
-                android:padding="4dp">
+                android:padding="4dp"
+                tools:listitem="@layout/list_item_movie_review"
+
+                >
             </android.support.v7.widget.RecyclerView>
         </RelativeLayout>
 
