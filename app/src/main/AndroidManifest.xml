@@ -21,6 +21,14 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!-- database provider or it will return null for the cursor -->
+        <provider
+            android:name=".database.DatabaseProvider"
+            android:authorities="com.mzdhr.popularmovies"
+            android:exported="false"/>
+
+
         <activity
             android:name=".ui.DetailsActivity"
             android:label="@string/title_activity_details"

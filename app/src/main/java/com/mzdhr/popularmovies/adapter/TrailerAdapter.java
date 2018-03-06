@@ -27,15 +27,15 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
     private ArrayList<Trailer> mTrailers;
     private Context mContext;
 
-    public interface ListItemClickListener {
-        void onListItemClick(int clickedItemIndex);
-    }
-
-    public TrailerAdapter(ArrayList<Trailer> trailers, Context context, ListItemClickListener listener) {
-        mTrailers = trailers;
-        mContext = context;
-        // mOnClickListener = listener;
-    }
+//    public interface ListItemClickListener {
+//        void onListItemClick(int clickedItemIndex);
+//    }
+//
+//    public TrailerAdapter(ArrayList<Trailer> trailers, Context context, ListItemClickListener listener) {
+//        mTrailers = trailers;
+//        mContext = context;
+//        // mOnClickListener = listener;
+//    }
 
     public TrailerAdapter(ArrayList<Trailer> trailers, Context context) {
         mTrailers = trailers;
