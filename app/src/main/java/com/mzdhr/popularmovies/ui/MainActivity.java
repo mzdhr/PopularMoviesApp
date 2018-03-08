@@ -107,6 +107,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
             return true;
         }
 
+        if (id == R.id.action_sort_by_favorite) {
+            Intent intent = new Intent(MainActivity.this, FavoriteActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
         if (id == R.id.action_sort_by_popular) {
             getData(Constant.SORT_BY_POPULAR);
             mProgressBar.setVisibility(View.VISIBLE);

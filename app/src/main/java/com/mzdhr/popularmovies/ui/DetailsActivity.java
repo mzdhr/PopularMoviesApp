@@ -1,6 +1,11 @@
 package com.mzdhr.popularmovies.ui;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,12 +14,15 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.mzdhr.popularmovies.R;
 import com.mzdhr.popularmovies.adapter.ReviewAdapter;
 import com.mzdhr.popularmovies.adapter.TrailerAdapter;
+import com.mzdhr.popularmovies.database.DatabaseContract;
 import com.mzdhr.popularmovies.helper.Constant;
 import com.mzdhr.popularmovies.helper.JsonUtils;
 import com.mzdhr.popularmovies.helper.NetworkUtils;
@@ -24,6 +32,7 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -42,6 +51,10 @@ public class DetailsActivity extends AppCompatActivity {
     private String mPlot;
     private String mMovieID;
 
+    private String movieAPIID = "";
+    private long movieDatabaseID = -1;
+
+
     // Views
     private ImageView mPosterImageView;
     private TextView mTitleTextView;
@@ -50,6 +63,8 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView mPlotTextView;
     private RecyclerView mTrailerRecyclerView;
     private RecyclerView mReviewsRecyclerView;
+    private ImageView mFavoriteButtonImageView;
+    private RatingBar mRatingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,11 +101,17 @@ public class DetailsActivity extends AppCompatActivity {
         getDataReviews(Constant.SORT_BY_MOVIE_REVIEW);
         setAdapterReviews();
 
-
-        // TODO: 06/03/2018 need to set them in the adapter when the load data
         mTrailerRecyclerView.setFocusable(false);
         mReviewsRecyclerView.setFocusable(false);
+
+        mFavoriteButtonImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                favoriteIt();
+            }
+        });
     }
+
 
     private void findViews() {
         mPosterImageView = (ImageView) findViewById(R.id.movie_poster_imageView);
@@ -100,8 +121,8 @@ public class DetailsActivity extends AppCompatActivity {
         mPlotTextView = (TextView) findViewById(R.id.movie_plot_textView);
         mTrailerRecyclerView = (RecyclerView) findViewById(R.id.trailerRecyclerView);
         mReviewsRecyclerView = (RecyclerView) findViewById(R.id.reviewRecyclerView);
-
-
+        mFavoriteButtonImageView = (ImageView) findViewById(R.id.favorite_button_imageView);
+        mRatingBar = (RatingBar) findViewById(R.id.ratingBar);
     }
 
     private void bindData() {
@@ -114,29 +135,114 @@ public class DetailsActivity extends AppCompatActivity {
         mTitleTextView.setText(mTitle);
         mReleaseDateTextView.setText(mReleaseDate);
         mRatingTextView.setText(mRating);
+        mRatingBar.setRating(Float.parseFloat(mRating));
         mPlotTextView.setText(mPlot);
     }
 
-    private void setAdapterTrailer(){
+    private void setAdapterTrailer() {
         mTrailerAdapter = new TrailerAdapter(mTrailers, this);
         mTrailerRecyclerView.setAdapter(mTrailerAdapter);
     }
 
-    private void setAdapterReviews(){
-       mReviewAdapter = new ReviewAdapter(mReviews, this);
+    private void setAdapterReviews() {
+        mReviewAdapter = new ReviewAdapter(mReviews, this);
         mReviewsRecyclerView.setAdapter(mReviewAdapter);
     }
 
-    private void getDataTrailers(String sortType){
+    private void getDataTrailers(String sortType) {
         URL url = NetworkUtils.buildURL(sortType, mMovieID);
         Log.d(TAG, "getDataTrailers: " + url.toString());
         new TrailerQueryTask().execute(url);
     }
 
-    private void getDataReviews(String sortType){
+    private void getDataReviews(String sortType) {
         URL url = NetworkUtils.buildURL(sortType, mMovieID);
         Log.d(TAG, "getDataReviews: " + url.toString());
         new ReviewsQueryTask().execute(url);
+    }
+
+    private void favoriteIt() {
+        // first check if the movie is favorite or not
+        checkFavoriteStatus();
+
+//        if (mMovieID.equals(movieAPIID)) {
+        if (checkFavoriteStatus()) {
+            // If the movie not in the database, then add it
+            insertMovieInDatabase();
+            mFavoriteButtonImageView.setImageResource(R.drawable.ic_heart);
+        } else {
+            // If the movie in the database, then remove it
+            removeMovieFromDatabase(movieAPIID, movieDatabaseID);
+            mFavoriteButtonImageView.setImageResource(R.drawable.ic_heart_outline);
+        }
+    }
+
+    private boolean checkFavoriteStatus(){
+        // Preparing values
+        String selection = DatabaseContract.MovieEntry.COLUMN_MOVIE_MOVIE_ID + "==" + mMovieID;
+        Uri uri = DatabaseContract.MovieEntry.CONTENT_URI_MOVIE;
+
+        // Querying the database
+        Cursor cursor = getContentResolver().query(uri, null, selection, null, null);
+
+        // Extract data from database, to help determined if the movie is favorite or not
+        if (cursor != null && cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            int movieIDIndex = cursor.getColumnIndex(DatabaseContract.MovieEntry.COLUMN_MOVIE_MOVIE_ID);
+            int movieDatabaseIDIndex = cursor.getColumnIndex(DatabaseContract.MovieEntry._ID);
+            movieAPIID = cursor.getString(movieIDIndex);
+            movieDatabaseID = cursor.getLong(movieDatabaseIDIndex);
+            return false;
+        } else {
+            movieAPIID = "";
+            movieDatabaseID = -1;
+            return true;
+        }
+    }
+
+    private void removeMovieFromDatabase(String currentMovieAPIID, long currentMovieDatabaseID) {
+        String where = DatabaseContract.MovieEntry.COLUMN_MOVIE_MOVIE_ID + "==" + currentMovieAPIID;
+        Uri currentUri = ContentUris.withAppendedId(DatabaseContract.MovieEntry.CONTENT_URI_MOVIE, currentMovieDatabaseID);
+        int rowsDeleted = getContentResolver().delete(currentUri, where, null);
+        if (rowsDeleted == 0) {
+            Log.d(TAG, "onClick: Delete failed");
+        } else {
+            Log.d(TAG, "onClick: Delete Successful");
+        }
+    }
+
+    private void insertMovieInDatabase() {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                // Preparing poster image to insert it into database
+                // Creating bitmap cases: The application may be doing too much work on its main thread.]
+                // So it is better to be inside an AsyncTask
+                mPosterImageView.buildDrawingCache();
+                Bitmap bitmap = Bitmap.createBitmap(mPosterImageView.getDrawingCache());
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
+                byte[] posterImage = byteArrayOutputStream.toByteArray();
+
+                // Preparing values to insert
+                ContentValues values = new ContentValues();
+                values.put(DatabaseContract.MovieEntry.COLUMN_MOVIE_TITLE, mTitle);
+                values.put(DatabaseContract.MovieEntry.COLUMN_MOVIE_POSTER_IMAGE, posterImage);
+                values.put(DatabaseContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE, mReleaseDate);
+                values.put(DatabaseContract.MovieEntry.COLUMN_MOVIE_RATING, mRating);
+                values.put(DatabaseContract.MovieEntry.COLUMN_MOVIE_PLOT, mPlot);
+                values.put(DatabaseContract.MovieEntry.COLUMN_MOVIE_MOVIE_ID, mMovieID);
+
+                // Inserting
+                Uri insertUri = getContentResolver().insert(DatabaseContract.MovieEntry.CONTENT_URI_MOVIE, values);
+                // Checking Insert
+                if (insertUri == null) {
+                    Log.d(TAG, "insertIntoDatabase: Insert Failed!");
+                } else {
+                    Log.d(TAG, "insertIntoDatabase: Insert Successful");
+                }
+            }
+        });
     }
 
 
@@ -144,9 +250,9 @@ public class DetailsActivity extends AppCompatActivity {
      * Async Task Classes as to fetch data in background
      */
 
-    public class TrailerQueryTask extends AsyncTask<URL, Void, String>{
+    public class TrailerQueryTask extends AsyncTask<URL, Void, String> {
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             super.onPreExecute();
             //mTrailerProgressBar.setVisibility(View.VISIBLE);
         }
@@ -182,15 +288,15 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
 
-    public class ReviewsQueryTask extends AsyncTask<URL, Void, String>{
+    public class ReviewsQueryTask extends AsyncTask<URL, Void, String> {
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             super.onPreExecute();
             //mReviewProgressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
-        protected String doInBackground(URL... urls){
+        protected String doInBackground(URL... urls) {
             URL url = urls[0];
             String result = null;
             try {

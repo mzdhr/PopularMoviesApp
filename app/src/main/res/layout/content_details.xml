@@ -45,28 +45,24 @@
                 android:padding="4dp"
                 >
 
-                <TextView
-                    style="@style/headerTextStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title"
-                    />
 
                 <TextView
                     android:id="@+id/movie_title_textView"
-                    style="@style/subHeaderTextStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/movie_title_demo"
-                    />
-
-                <TextView
                     style="@style/headerTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/release_date"
+                    android:text="@string/movie_title_demo"
+                    android:textSize="20sp"
                     />
-
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="10"
+                    android:rating="7"
+                    android:stepSize="0.5"
+                    />
                 <TextView
                     android:id="@+id/movie_release_date_textView"
                     style="@style/subHeaderTextStyle"
@@ -75,12 +71,6 @@
                     android:text="@string/demo_release_date"
                     />
 
-                <TextView
-                    style="@style/headerTextStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/votes"
-                    />
 
                 <TextView
                     android:id="@+id/movie_vote_textView"
@@ -88,7 +78,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/demo_votes"
+                    android:visibility="gone"
                     />
+
+
 
             </LinearLayout>
 

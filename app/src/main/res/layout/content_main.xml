@@ -8,9 +8,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.mzdhr.popularmovies.ui.MainActivity"
     tools:showIn="@layout/activity_main"
-    android:background="@color/colorActivityBackground"
-
-   >
+    android:background="@color/colorActivityBackground">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/mainRecyclerView"
