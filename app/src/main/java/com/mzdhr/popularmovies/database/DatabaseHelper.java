@@ -13,7 +13,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Constants
     private static final String TAG = DatabaseHelper.class.getSimpleName();
     private static final String DATABASE_NAME = "popularmovies.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
 
     // SQL Commands
     private String SQL_CREATE_MOVIE_TABLE;
@@ -28,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "CREATE TABLE " + DatabaseContract.MovieEntry.MOVIE_TABLE_NAME + " ("
                 + DatabaseContract.MovieEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + DatabaseContract.MovieEntry.COLUMN_MOVIE_TITLE + " TEXT NOT NULL DEFAULT '', "
-                + DatabaseContract.MovieEntry.COLUMN_MOVIE_POSTER_IMAGE + " BLOB, "
+                + DatabaseContract.MovieEntry.COLUMN_MOVIE_POSTER_IMAGE_URL + " TEXT NOT NULL DEFAULT '', "
                 + DatabaseContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE + " TEXT NOT NULL DEFAULT '', "
                 + DatabaseContract.MovieEntry.COLUMN_MOVIE_RATING + " TEXT NOT NULL DEFAULT '', "
                 + DatabaseContract.MovieEntry.COLUMN_MOVIE_PLOT + " TEXT NOT NULL DEFAULT '', "

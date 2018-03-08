@@ -50,7 +50,7 @@ public class FavoriteActivity extends AppCompatActivity implements LoaderManager
         String[] projection = {
                 DatabaseContract.MovieEntry._ID,
                 DatabaseContract.MovieEntry.COLUMN_MOVIE_TITLE,
-                DatabaseContract.MovieEntry.COLUMN_MOVIE_POSTER_IMAGE,
+                DatabaseContract.MovieEntry.COLUMN_MOVIE_POSTER_IMAGE_URL,
                 DatabaseContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE,
                 DatabaseContract.MovieEntry.COLUMN_MOVIE_RATING,
                 DatabaseContract.MovieEntry.COLUMN_MOVIE_PLOT,

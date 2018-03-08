@@ -4,7 +4,6 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,7 +31,6 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -110,6 +108,8 @@ public class DetailsActivity extends AppCompatActivity {
                 favoriteIt();
             }
         });
+
+        checkFavoriteStatus();
     }
 
 
@@ -163,17 +163,13 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void favoriteIt() {
         // first check if the movie is favorite or not
-        checkFavoriteStatus();
-
-//        if (mMovieID.equals(movieAPIID)) {
+        // checkFavoriteStatus();
         if (checkFavoriteStatus()) {
             // If the movie not in the database, then add it
             insertMovieInDatabase();
-            mFavoriteButtonImageView.setImageResource(R.drawable.ic_heart);
         } else {
             // If the movie in the database, then remove it
             removeMovieFromDatabase(movieAPIID, movieDatabaseID);
-            mFavoriteButtonImageView.setImageResource(R.drawable.ic_heart_outline);
         }
     }
 
@@ -192,11 +188,15 @@ public class DetailsActivity extends AppCompatActivity {
             int movieDatabaseIDIndex = cursor.getColumnIndex(DatabaseContract.MovieEntry._ID);
             movieAPIID = cursor.getString(movieIDIndex);
             movieDatabaseID = cursor.getLong(movieDatabaseIDIndex);
+            mFavoriteButtonImageView.setImageResource(R.drawable.ic_heart);
             return false;
+
         } else {
             movieAPIID = "";
             movieDatabaseID = -1;
+            mFavoriteButtonImageView.setImageResource(R.drawable.ic_heart_outline);
             return true;
+
         }
     }
 
@@ -209,25 +209,17 @@ public class DetailsActivity extends AppCompatActivity {
         } else {
             Log.d(TAG, "onClick: Delete Successful");
         }
+        mFavoriteButtonImageView.setImageResource(R.drawable.ic_heart_outline);
     }
 
     private void insertMovieInDatabase() {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                // Preparing poster image to insert it into database
-                // Creating bitmap cases: The application may be doing too much work on its main thread.]
-                // So it is better to be inside an AsyncTask
-                mPosterImageView.buildDrawingCache();
-                Bitmap bitmap = Bitmap.createBitmap(mPosterImageView.getDrawingCache());
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
-                byte[] posterImage = byteArrayOutputStream.toByteArray();
-
                 // Preparing values to insert
                 ContentValues values = new ContentValues();
                 values.put(DatabaseContract.MovieEntry.COLUMN_MOVIE_TITLE, mTitle);
-                values.put(DatabaseContract.MovieEntry.COLUMN_MOVIE_POSTER_IMAGE, posterImage);
+                values.put(DatabaseContract.MovieEntry.COLUMN_MOVIE_POSTER_IMAGE_URL, mPosterLink);
                 values.put(DatabaseContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE, mReleaseDate);
                 values.put(DatabaseContract.MovieEntry.COLUMN_MOVIE_RATING, mRating);
                 values.put(DatabaseContract.MovieEntry.COLUMN_MOVIE_PLOT, mPlot);
@@ -243,13 +235,13 @@ public class DetailsActivity extends AppCompatActivity {
                 }
             }
         });
+        mFavoriteButtonImageView.setImageResource(R.drawable.ic_heart);
     }
 
 
     /**
      * Async Task Classes as to fetch data in background
      */
-
     public class TrailerQueryTask extends AsyncTask<URL, Void, String> {
         @Override
         protected void onPreExecute() {

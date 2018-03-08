@@ -2,8 +2,6 @@ package com.mzdhr.popularmovies.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +13,7 @@ import android.widget.TextView;
 
 import com.mzdhr.popularmovies.R;
 import com.mzdhr.popularmovies.database.DatabaseContract;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by mohammad on 06/03/2018.
@@ -69,21 +68,23 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
         void bind(int position) {
             // Getting Indexes
             mCursor.moveToPosition(position);
-            int moviePosterIndex = mCursor.getColumnIndex(DatabaseContract.MovieEntry.COLUMN_MOVIE_POSTER_IMAGE);
+            int moviePosterIndex = mCursor.getColumnIndex(DatabaseContract.MovieEntry.COLUMN_MOVIE_POSTER_IMAGE_URL);
             int movieTitleIndex = mCursor.getColumnIndex(DatabaseContract.MovieEntry.COLUMN_MOVIE_TITLE);
             int movieRatingIndex = mCursor.getColumnIndex(DatabaseContract.MovieEntry.COLUMN_MOVIE_RATING);
             int movieReleaseDateIndex = mCursor.getColumnIndex(DatabaseContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE);
 
             // Getting Values
-            byte[] posterBlob = mCursor.getBlob(moviePosterIndex);
-            Bitmap posterBitmap = BitmapFactory.decodeByteArray(posterBlob, 0, posterBlob.length);
+            String posterUrl = mCursor.getString(moviePosterIndex);
             String title = mCursor.getString(movieTitleIndex);
             String rating = mCursor.getString(movieRatingIndex);
             String releaseDate = mCursor.getString(movieReleaseDateIndex);
 
             // Setting Value
-            Log.d(TAG, "bind:" + posterBitmap);
-            mMoviePosterImageView.setImageBitmap(posterBitmap);
+            Picasso.with(mContext)
+                    .load(posterUrl)
+                    .placeholder(R.drawable.loadingposter)
+                    .error(R.drawable.noposteravailable)
+                    .into(mMoviePosterImageView);
             mMovieTitleTextView.setText(title);
             mRatingBar.setRating(Float.parseFloat(rating));
             mMovieReleaseDateTextView.setText(releaseDate);

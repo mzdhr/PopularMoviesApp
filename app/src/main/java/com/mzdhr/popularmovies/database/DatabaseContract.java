@@ -30,7 +30,7 @@ public class DatabaseContract {
         public static final String _ID = BaseColumns._ID;
         public static final String MOVIE_TABLE_NAME = "movie_table_name";
         public static final String COLUMN_MOVIE_TITLE = "title";
-        public static final String COLUMN_MOVIE_POSTER_IMAGE = "poster";
+        public static final String COLUMN_MOVIE_POSTER_IMAGE_URL = "poster";
         public static final String COLUMN_MOVIE_RELEASE_DATE = "release_date";
         public static final String COLUMN_MOVIE_RATING = "rating";
         public static final String COLUMN_MOVIE_PLOT = "plot";
