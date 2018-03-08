@@ -163,7 +163,6 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void favoriteIt() {
         // first check if the movie is favorite or not
-        // checkFavoriteStatus();
         if (checkFavoriteStatus()) {
             // If the movie not in the database, then add it
             insertMovieInDatabase();
@@ -190,26 +189,12 @@ public class DetailsActivity extends AppCompatActivity {
             movieDatabaseID = cursor.getLong(movieDatabaseIDIndex);
             mFavoriteButtonImageView.setImageResource(R.drawable.ic_heart);
             return false;
-
         } else {
             movieAPIID = "";
             movieDatabaseID = -1;
             mFavoriteButtonImageView.setImageResource(R.drawable.ic_heart_outline);
             return true;
-
         }
-    }
-
-    private void removeMovieFromDatabase(String currentMovieAPIID, long currentMovieDatabaseID) {
-        String where = DatabaseContract.MovieEntry.COLUMN_MOVIE_MOVIE_ID + "==" + currentMovieAPIID;
-        Uri currentUri = ContentUris.withAppendedId(DatabaseContract.MovieEntry.CONTENT_URI_MOVIE, currentMovieDatabaseID);
-        int rowsDeleted = getContentResolver().delete(currentUri, where, null);
-        if (rowsDeleted == 0) {
-            Log.d(TAG, "onClick: Delete failed");
-        } else {
-            Log.d(TAG, "onClick: Delete Successful");
-        }
-        mFavoriteButtonImageView.setImageResource(R.drawable.ic_heart_outline);
     }
 
     private void insertMovieInDatabase() {
@@ -238,6 +223,17 @@ public class DetailsActivity extends AppCompatActivity {
         mFavoriteButtonImageView.setImageResource(R.drawable.ic_heart);
     }
 
+    private void removeMovieFromDatabase(String currentMovieAPIID, long currentMovieDatabaseID) {
+        String where = DatabaseContract.MovieEntry.COLUMN_MOVIE_MOVIE_ID + "==" + currentMovieAPIID;
+        Uri currentUri = ContentUris.withAppendedId(DatabaseContract.MovieEntry.CONTENT_URI_MOVIE, currentMovieDatabaseID);
+        int rowsDeleted = getContentResolver().delete(currentUri, where, null);
+        if (rowsDeleted == 0) {
+            Log.d(TAG, "onClick: Delete failed");
+        } else {
+            Log.d(TAG, "onClick: Delete Successful");
+        }
+        mFavoriteButtonImageView.setImageResource(R.drawable.ic_heart_outline);
+    }
 
     /**
      * Async Task Classes as to fetch data in background
@@ -246,7 +242,6 @@ public class DetailsActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            //mTrailerProgressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -263,8 +258,6 @@ public class DetailsActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            //mTrailerProgressBar.setVisibility(View.INVISIBLE);
-
             if (result != null && !TextUtils.isEmpty(result)) {
                 try {
                     mTrailers.clear();
@@ -274,7 +267,6 @@ public class DetailsActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             } else {
-                // showErrorMessage();
             }
         }
     }
@@ -284,7 +276,6 @@ public class DetailsActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            //mReviewProgressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -301,7 +292,6 @@ public class DetailsActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            //mReviewProgressBar.setVisibility(View.INVISIBLE);
             if (result != null && !TextUtils.isEmpty(result)) {
                 try {
                     mReviews.clear();
@@ -311,7 +301,6 @@ public class DetailsActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             } else {
-                // showErrorMessage();
             }
         }
     }
