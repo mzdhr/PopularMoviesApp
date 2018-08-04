@@ -1,5 +1,5 @@
 # Popular Movies App
-Android App to help users discover popular and highly rated movies on the web. Udacity Project number 01 for Android Developer NanoDegree.
+Android app to help users discover popular and highly rated movies on the web. Udacity Project number 01 for Android Developer NanoDegree.
 
 ## Built With
 * API, JSON, Picasso, AsyncTask, SQLite, RecyclerView, Object Oriented Design.
